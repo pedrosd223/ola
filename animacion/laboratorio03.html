@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 03 - Semáforo SVG</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+
+        .contenedor {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        svg {
+            width: 250px;
+            background: #111;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .encendida {
+            animation: latido 1s ease-in-out infinite;
+        }
+
+        @keyframes latido {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.55; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>Semáforo SVG</h1>
+
+        <svg viewBox="0 0 120 300">
+
+            <rect
+                x="10"
+                y="10"
+                width="100"
+                height="280"
+                rx="15"
+                fill="#222"
+                stroke="#555"
+                stroke-width="4">
+            </rect>
+
+            <circle
+                id="rojo"
+                cx="60"
+                cy="65"
+                r="30"
+                fill="#550000">
+            </circle>
+
+            <circle
+                id="ambar"
+                cx="60"
+                cy="150"
+                r="30"
+                fill="#554400">
+            </circle>
+
+            <circle
+                id="verde"
+                cx="60"
+                cy="235"
+                r="30"
+                fill="#003300">
+            </circle>
+
+        </svg>
+
+        <br>
+
+        <button id="boton">Siguiente</button>
+
+    </div>
+
+    <script>
+        // 1. Seleccionar nodos
+        const rojo = document.querySelector('#rojo');
+        const ambar = document.querySelector('#ambar');
+        const verde = document.querySelector('#verde');
+        const boton = document.querySelector('#boton');
+
+        // 2. Agrupar las luces
+        const luces = [rojo, ambar, verde];
+
+        // 3. Colores
+        const coloresApagados = [
+            '#550000',
+            '#554400',
+            '#003300'
+        ];
+
+        const coloresEncendidos = [
+            '#ff2222',
+            '#ffcc00',
+            '#00dd55'
+        ];
+
+        // 4. Función principal
+        function encender(cual) {
+
+            // Apagar todas
+            luces.forEach((luz, indice) => {
+
+                luz.setAttribute(
+                    'fill',
+                    coloresApagados[indice]
+                );
+
+                luz.classList.remove('encendida');
+            });
+
+            // Encender una
+            luces[cual].setAttribute(
+                'fill',
+                coloresEncendidos[cual]
+            );
+
+            luces[cual].classList.add('encendida');
+        }
+
+        // 5. Estado actual
+        let i = 0;
+
+        // 6. Estado inicial
+        encender(i);
+
+        // 7. Botón
+        boton.addEventListener('click', () => {
+
+            i = (i + 1) % 3;
+
+            encender(i);
+        });
+
+        // 8. Ciclo automático con tiempos distintos
+        function cicloAutomatico() {
+
+            encender(i);
+
+            let tiempo;
+
+            if (i === 0) {
+                tiempo = 3000; // rojo
+            } else if (i === 1) {
+                tiempo = 1000; // ámbar
+            } else {
+                tiempo = 3000; // verde
+            }
+
+            setTimeout(() => {
+
+                i = (i + 1) % 3;
+
+                cicloAutomatico();
+
+            }, tiempo);
+        }
+
+        cicloAutomatico();
+    </script>
+
+</body>
+</html>

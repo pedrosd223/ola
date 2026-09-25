@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Semáforo Automático</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            font-family: Arial, sans-serif;
+            background: #eeeeee;
+        }
+
+        h1 {
+            color: #1613c7;
+            margin-bottom: 20px;
+        }
+
+        
+        .semaforo {
+            width: 220px;
+            padding: 10px;
+        }
+
+        
+        #caja {
+            fill: #111827;
+            stroke: #26354f;
+            stroke-width: 3;
+        }
+
+        
+        .luz {
+            fill: #333333;
+            stroke: #111111;
+            stroke-width: 2;
+            transition: fill 0.3s ease, filter 0.3s ease;
+        }
+
+        
+        #rojo {
+            fill: #3d1717;
+        }
+
+        #ambar {
+            fill: #4a3d16;
+        }
+
+        #verde {
+            fill: #153b22;
+        }
+
+        
+        .encendida {
+            filter: drop-shadow(0 0 12px currentColor);
+            animation: brillo 0.4s ease-in-out infinite alternate;
+        }
+
+        
+        @keyframes brillo {
+            from {
+                opacity: 0.75;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        
+        #rojo.encendida {
+            fill: #ff2020;
+            color: #ff2020;
+        }
+
+        #ambar.encendida {
+            fill: #ffc107;
+            color: #ffc107;
+        }
+
+        #verde.encendida {
+            fill: #20d65a;
+            color: #20d65a;
+        }
+
+        
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #17233c;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #263a60;
+        }
+
+        #estado {
+            margin-top: 15px;
+            color: #17233c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Semáforo</h1>
+
+    <div class="semaforo">
+
+        <svg
+            width="220"
+            height="440"
+            viewBox="0 0 200 440"
+        >
+
+            
+            <rect
+                id="caja"
+                x="10"
+                y="10"
+                width="180"
+                height="520"
+                rx="30"
+            />
+
+           
+            <circle
+                id="rojo"
+                class="luz"
+                cx="100"
+                cy="90"
+                r="55"
+            />
+
+            
+            <circle
+                id="ambar"
+                class="luz"
+                cx="100"
+                cy="220"
+                r="55"
+            />
+
+            
+            <circle
+                id="verde"
+                class="luz"
+                cx="100"
+                cy="350"
+                r="55"
+            />
+
+        </svg>
+
+    </div>
+
+    
+    <button id="siguiente">
+        Siguiente color
+    </button>
+
+    <div id="estado">
+        Rojo
+    </div>
+
+
+    <script>
+
+        const luces = [
+            document.getElementById("rojo"),
+            document.getElementById("ambar"),
+            document.getElementById("verde")
+        ];
+
+        const nombres = [
+            "Rojo",
+            "Ámbar",
+            "Verde"
+        ];
+
+
+
+        function encender(cual) {
+
+           
+            luces.forEach(function(luz) {
+                luz.classList.remove("encendida");
+            });
+
+            
+            luces[cual].classList.add("encendida");
+
+            
+            document.getElementById("estado").textContent =
+                nombres[cual];
+        }
+
+
+
+        let i = 0;
+
+        document.getElementById("siguiente").addEventListener(
+            "click",
+            function() {
+
+                
+                i = (i + 1) % 3;
+
+                encender(i);
+            }
+        );
+
+
+        
+
+        let tiempo = 2;
+
+        setInterval(function() {
+
+            tiempo++;
+
+            if (i === 0 && tiempo >= 6) {
+
+                i = 1;
+                tiempo = 0;
+
+                encender(i);
+            }
+
+            
+            else if (i === 1 && tiempo >= 4) {
+
+                i = 2;
+                tiempo = 0;
+
+                encender(i);
+            }
+
+            
+            else if (i === 2 && tiempo >= 6) {
+
+                i = 0;
+                tiempo = 0;
+
+                encender(i);
+            }
+
+        }, 2000);
+
+
+
+        encender(0);
+
+    </script>
+
+</body>
+</html>
