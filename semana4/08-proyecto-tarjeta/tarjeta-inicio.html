@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moto Pulsar 125 - Tarjeta Interactiva</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1329;
+        }
+
+        /* INSTRUCTION 1 & 2: Transition and Hover elevation */
+        .product-card {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* INSTRUCTION 3: Button hover, active and focus-visible states */
+        .btn-buy {
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .btn-buy:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-buy:active {
+            transform: scale(0.97);
+        }
+        .btn-buy:focus-visible {
+            outline: 2px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
+        /* INSTRUCTION 4: Spinner styles hidden by default, visible with .cargando */
+        .spinner {
+            display: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #ffffff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.75s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Control visibility based on button state classes */
+        .btn-buy.cargando .spinner {
+            display: inline-block;
+        }
+        .btn-buy.cargando .btn-text,
+        .btn-buy.cargando .btn-icon {
+            display: none;
+        }
+
+        .btn-buy.added .spinner {
+            display: none;
+        }
+        .btn-buy.added .btn-text,
+        .btn-buy.added .btn-icon {
+            display: inline-flex;
+        }
+
+        /* INSTRUCTION 5: Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            .product-card,
+            .btn-buy,
+            .product-card:hover {
+                transition: none !important;
+                transform: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <main class="w-full max-w-md bg-[#09101f] border border-slate-800 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center">
+        
+        <div class="product-card w-full bg-[#f4f1ea] rounded-xl overflow-hidden shadow-lg border border-slate-300">
+            
+            <div class="relative w-full h-56 bg-[#e2ddd5] flex items-center justify-center overflow-hidden">
+                <img 
+                    src="https://motocorp.pe/media/catalog/product/p/u/pulsar-125ns-bg_1_z3y5fh8ggouqkmxq.jpg?quality=85&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700" 
+                    alt="Moto Pulsar 125" 
+                    class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-500"
+                    onerror="this.src='https://placehold.co/600x400/e2ddd5/334155?text=Moto+Pulsar+125';"
+                >
+            </div>
+
+            <!-- Product Details -->
+            <div class="p-6 flex flex-col gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 tracking-tight">Moto Pulsar 125</h2>
+                    <p class="text-2xl font-extrabold text-blue-600 mt-1">S/ 6,499.00</p>
+                </div>
+
+                <button 
+                    id="buyButton" 
+                    class="btn-buy w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer select-none"
+                    aria-label="Añadir Moto Pulsar 125 al carrito"
+                >
+                    <!-- Spinner (Instruction 4) -->
+                    <span class="spinner" aria-hidden="true"></span>
+
+                    <!-- Default / Added Icon & Text -->
+                    <span class="btn-icon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </span>
+                    <span class="btn-text font-semibold">Añadir</span>
+                </button>
+            </div>
+        </div>
+        
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buyButton = document.getElementById('buyButton');
+            let isProcessing = false;
+
+            buyButton.addEventListener('click', () => {
+                if (isProcessing) return;
+                isProcessing = true;
+
+                buyButton.classList.add('cargando');
+                buyButton.setAttribute('aria-busy', 'true');
+
+                setTimeout(() => {
+                    buyButton.classList.remove('cargando');
+                    buyButton.classList.add('added');
+                    buyButton.removeAttribute('aria-busy');
+
+                    const iconSpan = buyButton.querySelector('.btn-icon');
+                    const textSpan = buyButton.querySelector('.btn-text');
+
+                    iconSpan.innerHTML = `
+                        <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    `;
+                    textSpan.textContent = '¡Añadido!';
+                    buyButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    buyButton.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+
+                    setTimeout(() => {
+                        buyButton.classList.remove('added', 'bg-emerald-600', 'hover:bg-emerald-700');
+                        buyButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                        iconSpan.innerHTML = `
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        `;
+                        textSpan.textContent = 'Añadido'; 
+                        textSpan.textContent = 'Añadir';
+                        isProcessing = false;
+                    }, 3000);
+
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

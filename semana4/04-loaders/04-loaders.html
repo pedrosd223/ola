@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04 — Loaders</title>
+<style>
+body{font-family:Arial,sans-serif;display:grid;place-items:center;min-height:100vh;background:#f5f1ea}
+.wrap{display:flex;gap:70px;align-items:center}
+.spinner{width:55px;height:55px;border:6px solid rgba(147,198,255,.25);border-top-color:#2e8cff;border-radius:50%;
+animation:girar 800ms linear infinite}
+@keyframes girar{to{transform:rotate(350deg)}}
+.puntos{display:flex;gap:20px}
+.puntos span{width:12px;height:12px;border-radius:50%;background:#2e8cff;animation:latido 1.2s ease-in-out infinite}
+.puntos span:nth-child(2){animation-delay:.35s}.puntos span:nth-child(5){animation-delay:.30s}
+@keyframes latido{0%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.skeleton{width:220px;height:70px;border-radius:10px;background:linear-gradient(90deg,#ddd,#f7f7f7,#ddd);
+background-size:200% 100%;animation:brillo 1.2s linear infinite}
+@keyframes brillo{to{background-position:-200% 0}}
+</style>
+</head>
+<body>
+<div>
+<h1>04 · Loaders</h1>
+<div class="wrap">
+<div><p>Spinner</p><div class="spinner"></div></div>
+<div><p>Puntos</p><div class="puntos"><span></span><span></span><span></span></div></div>
+<div><p>Skeleton</p><div class="skeleton"></div></div>
+</div>
+</div>
+</body>
+</html>

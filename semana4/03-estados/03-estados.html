@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 — Estados</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:700px;margin:60px auto;padding:20px;line-height:1.6}
+.boton{padding:15px 28px;border:0;border-radius:6px;background:#254e9c;color:white;cursor:pointer;
+transition:background 150ms ease,transform 100ms ease}
+.boton:hover{background:#2e8cff}
+.boton:active{transform:scale(.96)}
+.boton:focus-visible{outline:3px solid #93c6ff;outline-offset:4px}
+.campo{padding:12px;border:2px solid #bbb;border-radius:6px}
+.campo:focus{outline:none;border-color:#2e8cff;box-shadow:0 0 0 4px rgba(46,140,255,.3)}
+@media (prefers-reduced-motion: reduce){
+ *{transition:none !important;animation:none !important}
+}
+</style>
+</head>
+<body>
+<h1>03 · hover, focus-visible y active</h1>
+<p>Usa el ratón, presiona el botón y luego usa Tab para comprobar el foco.</p>
+<button class="boton">Presióname</button>
+<p><label>Campo: <input class="campo" placeholder="Llega con Tab o clic"></label></p>
+</body>
+</html>
